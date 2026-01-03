@@ -1,98 +1,163 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { Text } from '@react-navigation/elements';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={styles.safe}>
+      <DashboardScreen />
+    </SafeAreaView>
+  );
+}
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+function DashboardScreen() {
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.title}>ESP32 Companion</Text>
+        <View style={styles.statusRow}>
+          <Ionicons name="bluetooth" size={16} color="#22C55E" />
+          <Text style={styles.statusText}>Connected</Text>
+        </View>
+      </View>
+
+      {/* Device Preview */}
+      <View style={styles.previewCard}>
+        <Text style={styles.previewTitle}>Now Displaying</Text>
+        <View style={styles.previewScreen}>
+          <Text style={styles.previewContent}>TO-DO LIST</Text>
+          <Text style={styles.previewSub}>3 tasks remaining</Text>
+        </View>
+        <TouchableOpacity style={styles.primaryButton}>
+          <Text style={styles.primaryButtonText}>Change Display</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Today at a Glance */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Today at a Glance</Text>
+        <Text style={styles.cardBody}>• Finish UI design{''}• Team meeting at 4:00 PM</Text>
+      </View>
+
+      {/* Quick Actions */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Quick Actions</Text>
+        <View style={styles.actionRow}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="add" size={18} color="#020617" />
+            <Text style={styles.actionText}>Add Task</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Ionicons name="calendar" size={18} color="#020617" />
+            <Text style={styles.actionText}>Add Event</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  safe: {
+    flex: 1,
+    backgroundColor: '#020617',
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  header: {
+    marginBottom: 24,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: '#E5E7EB',
+  },
+  statusRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginTop: 6,
   },
-  stepContainer: {
-    gap: 8,
+  statusText: {
+    marginLeft: 6,
+    color: '#22C55E',
+    fontWeight: '500',
+  },
+  previewCard: {
+    backgroundColor: '#0F172A',
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 20,
+  },
+  previewTitle: {
+    color: '#38BDF8',
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  previewScreen: {
+    backgroundColor: '#020617',
+    borderRadius: 12,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  previewContent: {
+    color: '#E5E7EB',
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 1,
+  },
+  previewSub: {
+    marginTop: 6,
+    color: '#94A3B8',
+    fontSize: 13,
+  },
+  primaryButton: {
+    backgroundColor: '#38BDF8',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  primaryButtonText: {
+    color: '#020617',
+    fontWeight: '700',
+  },
+  card: {
+    backgroundColor: '#0F172A',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  cardTitle: {
+    color: '#38BDF8',
+    fontWeight: '600',
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  cardBody: {
+    color: '#E5E7EB',
+    lineHeight: 22,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  actionButton: {
+    backgroundColor: '#38BDF8',
+    borderRadius: 12,
+    paddingVertical: 12,
+    width: '48%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionText: {
+    marginLeft: 6,
+    color: '#020617',
+    fontWeight: '600',
   },
 });
