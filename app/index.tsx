@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
 // LOGIN PAGE UI ONLY
 // UI-first, no navigation, no BLE yet
 
@@ -16,6 +15,33 @@ export default function App() {
 function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleLogin = async () => {
+    const res = await fetch('http://10.0.0.62:3000/login', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email,
+            password,
+        }),
+    });
+
+    // const data = await res.json();
+
+    // if (!res.ok) {
+    //     alert(data.error);
+    //     return;
+    // }
+
+    // Store userId locally
+    // await AsyncStorage.setItem('userId', data.userId);
+
+    router.replace('/(tabs)/dashboard');
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -45,7 +71,7 @@ function LoginScreen() {
       </View>
 
       {/* Login Button */}
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>Log In</Text>
       </TouchableOpacity>
 

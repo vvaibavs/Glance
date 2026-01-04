@@ -2,9 +2,6 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-// SIGN UP PAGE UI ONLY
-// UI-first, no navigation or backend yet
-
 export default function App() {
   return (
     <SafeAreaView style={styles.safe}>
@@ -18,6 +15,23 @@ function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const signup = async() => {
+    try {
+        const data = await fetch('http://10.0.0.62:3000/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        });
+
+        const res = await data.json()
+
+    } catch(err) {
+        console.log(err)
+    }
+  }
   return (
     <View style={styles.container}>
       {/* App Title */}
@@ -54,7 +68,7 @@ function SignUpScreen() {
       </View>
 
       {/* Sign Up Button */}
-      <TouchableOpacity style={styles.signUpButton}>
+      <TouchableOpacity style={styles.signUpButton} onPress={signup}>
         <Text style={styles.signUpButtonText}>Sign Up</Text>
       </TouchableOpacity>
 
