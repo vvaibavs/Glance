@@ -28,12 +28,12 @@ function LoginScreen() {
         }),
     });
 
-    // const data = await res.json();
+    const data = await res.json();
 
-    // if (!res.ok) {
-    //     alert(data.error);
-    //     return;
-    // }
+    if (!res.ok) {
+        alert(data.error);
+        return;
+    }
 
     // Store userId locally
     // await AsyncStorage.setItem('userId', data.userId);

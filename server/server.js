@@ -38,62 +38,62 @@ app.post('/tasks', async (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-    try {
-        const { email, password } = req.body;
+  try {
+    console.log('SIGNUP BODY:', req.body);
 
-        // Basic validation
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password required' });
-        }
+    const { email, password } = req.body;
 
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(409).json({ error: 'User already exists' });
-        }
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
 
-        // Hash password
-        const passwordHash = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create user
-        const user = new User({
-            email,
-            passwordHash,
-            todos: [],
-            calendarEvents: [],
-        });
+    const user = new User({
+      email,
+      password: hashedPassword,
+    });
 
-        await user.save();
+    await user.save();
 
-        res.status(201).json({
-            success: true,
-            message: 'User created',
-            userId: user._id,
-        });
+    res.status(201).json({ message: 'User created' });
   } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Server error' });
+    console.error('SIGNUP ERROR:', err);
+    res.status(500).json({ error: 'Server error' });
   }
-})
+});
+
 
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    console.log('REQ BODY:', req.body);
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Missing email or password' });
+    }
+
+    const user = await User.findOne({ email });
+    console.log('USER FOUND:', user);
+
+    if (!user || !user.password) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    res.json({ message: 'Login successful' });
+  } catch (err) {
+    console.error('LOGIN ERROR:', err);
+    res.status(500).json({ error: 'Server error' });
   }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-
-  res.status(200).json({
-    message: 'Login successful',
-    userId: user._id,
-  });
 });
+
 
 
 app.listen(3000, () => console.log('Server running on port 3000'));

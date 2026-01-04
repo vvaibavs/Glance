@@ -31,6 +31,8 @@ function SignUpScreen() {
     } catch(err) {
         console.log(err)
     }
+
+    router.replace('/')
   }
   return (
     <View style={styles.container}>
