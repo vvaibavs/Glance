@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 // TO-DO PAGE UI ONLY
@@ -19,6 +20,8 @@ export default function App() {
 }
 
 function TodoScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -36,7 +39,7 @@ function TodoScreen() {
       />
 
       {/* Add Task FAB */}
-      <TouchableOpacity style={styles.fab}>
+      <TouchableOpacity style={styles.fab} onPress={() => router.push('/modal')}>
         <Ionicons name="add" size={28} color="#020617" />
       </TouchableOpacity>
     </View>
