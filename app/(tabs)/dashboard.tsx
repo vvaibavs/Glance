@@ -1,6 +1,8 @@
+import { useAuth } from '@/contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
-import { Text } from '@react-navigation/elements';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button } from '@react-navigation/elements';
+import { router } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -14,6 +16,12 @@ export default function HomeScreen() {
 }
 
 function DashboardScreen() {
+    const {user, loading, logout} = useAuth()
+    console.log(user)
+      const handleLogout = async () => {
+    await logout();
+    router.replace('/');
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -22,6 +30,7 @@ function DashboardScreen() {
         <View style={styles.statusRow}>
           <Ionicons name="bluetooth" size={16} color="#22C55E" />
           <Text style={styles.statusText}>Connected</Text>
+          <Text></Text>
         </View>
       </View>
 
@@ -57,6 +66,7 @@ function DashboardScreen() {
           </TouchableOpacity>
         </View>
       </View>
+      <Button onPress={handleLogout}><Text>Logout</Text></Button>
     </View>
   );
 }

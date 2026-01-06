@@ -86,14 +86,32 @@ app.post('/login', async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-
-    res.json({ message: 'Login successful' });
+    res.status(200).json({
+      success: true,
+      userId: user._id,
+      email: user.email,
+    });
   } catch (err) {
     console.error('LOGIN ERROR:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
+//get todos
+app.get('/todos/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    res.json(user.todos);
+});
 
+//add todo
+app.post('/todos/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const { todo } = req.body;
+    const user = await User.findById(userId);
+    user.todos.push({text: todo, completed: false});
+    await user.save();
+    res.json(user.todos);
+});
 
 app.listen(3000, () => console.log('Server running on port 3000'));
