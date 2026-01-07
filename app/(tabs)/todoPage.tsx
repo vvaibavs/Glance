@@ -1,5 +1,8 @@
+import { AppColors } from '@/constants/colors';
+import { useAuth } from '@/contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 // TO-DO PAGE UI ONLY
@@ -21,19 +24,31 @@ export default function App() {
 
 function TodoScreen() {
   const router = useRouter();
+  const [todos, setTodos] = useState([]);
+  const {user} = useAuth();
+  const getTodos = async() => {
+    try {
+      const res = await fetch(`http://10.0.0.62:3000/todos/${user}`);
+      setTodos(await res.json());
+      console.log(todos[1]['text']);
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
+  useEffect(() => {
+    getTodos();
+  }, []);
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>To-Do</Text>
-        <Text style={styles.subtitle}>Tasks synced to ESP32</Text>
       </View>
 
       {/* Task List */}
       <FlatList
-        data={MOCK_TASKS}
-        keyExtractor={(item) => item.id}
+        data={todos}
         renderItem={({ item }) => <TaskItem task={item} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
@@ -48,24 +63,24 @@ function TodoScreen() {
 
 function TaskItem({ task }) {
   return (
-    <View style={[styles.taskCard, task.done && styles.taskDone]}>
+    <TouchableOpacity style={[styles.taskCard, task.done && styles.taskDone]}>
       <Ionicons
         name={task.done ? 'checkmark-circle' : 'ellipse-outline'}
         size={22}
-        color={task.done ? '#22C55E' : '#94A3B8'}
+        color={task.done ? AppColors.success : AppColors.textSecondary}
       />
       <Text style={[styles.taskText, task.done && styles.taskTextDone]}>
-        {task.title}
+        {task.text}
       </Text>
-      <Ionicons name="chevron-forward" size={18} color="#475569" />
-    </View>
+      {/* <Ionicons name="chevron-forward" size={18} color={AppColors.border} /> */}
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#020617',
+    backgroundColor: AppColors.background,
   },
   container: {
     flex: 1,
@@ -77,16 +92,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '700',
-    color: '#E5E7EB',
+    color: AppColors.textPrimary,
   },
   subtitle: {
     marginTop: 4,
-    color: '#94A3B8',
+    color: AppColors.textSecondary,
   },
   taskCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0F172A',
+    backgroundColor: AppColors.surface,
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
@@ -98,11 +113,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 12,
     fontSize: 16,
-    color: '#E5E7EB',
+    color: AppColors.textPrimary,
   },
   taskTextDone: {
     textDecorationLine: 'line-through',
-    color: '#94A3B8',
+    color: AppColors.textSecondary,
   },
   fab: {
     position: 'absolute',
@@ -111,10 +126,10 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#38BDF8',
+    backgroundColor: AppColors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: AppColors.shadow,
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 6,

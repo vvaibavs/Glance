@@ -1,3 +1,4 @@
+import { AppColors } from '@/constants/colors';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -14,6 +15,7 @@ function SignUpScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
 
   const signup = async() => {
     try {
@@ -22,6 +24,7 @@ function SignUpScreen() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email,
+                userName: name,
                 password,
             }),
         });
@@ -53,6 +56,14 @@ function SignUpScreen() {
         />
         <TextInput
           style={styles.input}
+          placeholder="Name"
+          placeholderTextColor="#94A3B8"
+          value={name}
+          onChangeText={setName}
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
           placeholder="Password"
           placeholderTextColor="#94A3B8"
           value={password}
@@ -78,7 +89,7 @@ function SignUpScreen() {
       <View style={styles.optionsRow}>
         <Text style={styles.optionText}>Already have an account?</Text>
         <TouchableOpacity onPress={() => router.push('/')}>
-          <Text style={[styles.optionText, { color: '#38BDF8', marginLeft: 4 }]}>Log In</Text>
+          <Text style={[styles.optionText, { color: AppColors.primary, marginLeft: 4 }]}>Log In</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -88,7 +99,7 @@ function SignUpScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#020617',
+    backgroundColor: AppColors.background,
     justifyContent: 'center',
   },
   container: {
@@ -97,16 +108,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#38BDF8',            // bright base color
+    color: AppColors.primary,
     textAlign: 'center',
     marginBottom: 6,
-    textShadowColor: '#38BDF8',  // glow color
+    textShadowColor: AppColors.glowColor,
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 12,
   },
   subtitle: {
     fontSize: 16,
-    color: '#94A3B8',
+    color: AppColors.textSecondary,
     textAlign: 'center',
     marginBottom: 40,
   },
@@ -114,22 +125,22 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   input: {
-    backgroundColor: '#0F172A',
-    color: '#E5E7EB',
+    backgroundColor: AppColors.surface,
+    color: AppColors.textPrimary,
     padding: 14,
     borderRadius: 12,
     marginBottom: 16,
     fontSize: 16,
   },
   signUpButton: {
-    backgroundColor: '#38BDF8',
+    backgroundColor: AppColors.primary,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
     marginBottom: 20,
   },
   signUpButtonText: {
-    color: '#020617',
+    color: AppColors.primaryDark,
     fontWeight: '700',
     fontSize: 18,
   },
@@ -138,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   optionText: {
-    color: '#94A3B8',
+    color: AppColors.textSecondary,
     fontSize: 14,
   },
 });

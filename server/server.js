@@ -41,7 +41,7 @@ app.post('/signup', async (req, res) => {
   try {
     console.log('SIGNUP BODY:', req.body);
 
-    const { email, password } = req.body;
+    const { email, password, userName } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password required' });
@@ -51,6 +51,7 @@ app.post('/signup', async (req, res) => {
 
     const user = new User({
       email,
+      userName,
       password: hashedPassword,
     });
 
@@ -106,9 +107,11 @@ app.get('/todos/:userId', async (req, res) => {
 
 //add todo
 app.post('/todos/:userId', async (req, res) => {
+    console.log('todo')
     const { userId } = req.params;
     const { todo } = req.body;
     const user = await User.findById(userId);
+    console.log(user)
     user.todos.push({text: todo, completed: false});
     await user.save();
     res.json(user.todos);

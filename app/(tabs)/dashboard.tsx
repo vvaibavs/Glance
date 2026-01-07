@@ -1,9 +1,12 @@
+import Orb from '@/components/orb';
+import { AppColors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@react-navigation/elements';
 import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 
 
@@ -18,38 +21,25 @@ export default function HomeScreen() {
 function DashboardScreen() {
     const {user, loading, logout} = useAuth()
     console.log(user)
-      const handleLogout = async () => {
-    await logout();
-    router.replace('/');
+    const handleLogout = async () => {
+        await logout();
+        router.replace('/');
   };
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>ESP32 Companion</Text>
-        <View style={styles.statusRow}>
-          <Ionicons name="bluetooth" size={16} color="#22C55E" />
-          <Text style={styles.statusText}>Connected</Text>
-          <Text></Text>
-        </View>
+        <Text style={styles.title}>Welcome {'User'}!</Text>
       </View>
 
       {/* Device Preview */}
       <View style={styles.previewCard}>
-        <Text style={styles.previewTitle}>Now Displaying</Text>
-        <View style={styles.previewScreen}>
-          <Text style={styles.previewContent}>TO-DO LIST</Text>
-          <Text style={styles.previewSub}>3 tasks remaining</Text>
-        </View>
-        <TouchableOpacity style={styles.primaryButton}>
-          <Text style={styles.primaryButtonText}>Change Display</Text>
-        </TouchableOpacity>
+        <Orb size={200} imageSource={require('../../assets/images/orb.png')} />
       </View>
 
       {/* Today at a Glance */}
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Today at a Glance</Text>
-        <Text style={styles.cardBody}>• Finish UI design{''}• Team meeting at 4:00 PM</Text>
       </View>
 
       {/* Quick Actions */}
@@ -57,16 +47,16 @@ function DashboardScreen() {
         <Text style={styles.cardTitle}>Quick Actions</Text>
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="add" size={18} color="#020617" />
+            <Ionicons name="add" size={18} color={AppColors.primaryDark} />
             <Text style={styles.actionText}>Add Task</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="calendar" size={18} color="#020617" />
+            <Ionicons name="calendar" size={18} color={AppColors.primaryDark} />
             <Text style={styles.actionText}>Add Event</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <Button onPress={handleLogout}><Text>Logout</Text></Button>
+      <Button onPress={handleLogout} style={styles.actionButton}><Text style={styles.actionText}>Logout</Text></Button>
     </View>
   );
 }
@@ -74,7 +64,7 @@ function DashboardScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: '#020617',
+    backgroundColor: AppColors.background,
   },
   container: {
     flex: 1,
@@ -86,7 +76,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '700',
-    color: '#E5E7EB',
+    color: AppColors.textPrimary,
   },
   statusRow: {
     flexDirection: 'row',
@@ -95,61 +85,64 @@ const styles = StyleSheet.create({
   },
   statusText: {
     marginLeft: 6,
-    color: '#22C55E',
+    color: AppColors.success,
     fontWeight: '500',
   },
   previewCard: {
-    backgroundColor: '#0F172A',
+    backgroundColor: AppColors.surface,
     borderRadius: 18,
-    padding: 16,
+    padding: 24,
     marginBottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 260,
   },
   previewTitle: {
-    color: '#38BDF8',
+    color: AppColors.primary,
     fontWeight: '600',
     marginBottom: 12,
   },
   previewScreen: {
-    backgroundColor: '#020617',
+    backgroundColor: AppColors.background,
     borderRadius: 12,
     padding: 20,
     alignItems: 'center',
     marginBottom: 12,
   },
   previewContent: {
-    color: '#E5E7EB',
+    color: AppColors.textPrimary,
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 1,
   },
   previewSub: {
     marginTop: 6,
-    color: '#94A3B8',
+    color: AppColors.textSecondary,
     fontSize: 13,
   },
   primaryButton: {
-    backgroundColor: '#38BDF8',
+    backgroundColor: AppColors.primary,
     paddingVertical: 12,
     borderRadius: 12,
     alignItems: 'center',
   },
   primaryButtonText: {
-    color: '#020617',
+    color: AppColors.primaryDark,
     fontWeight: '700',
   },
   card: {
-    backgroundColor: '#0F172A',
+    backgroundColor: AppColors.surface,
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
   },
   cardTitle: {
-    color: '#38BDF8',
+    color: AppColors.textPrimary,
     fontWeight: '600',
     marginBottom: 8,
   },
   cardBody: {
-    color: '#E5E7EB',
+    color: AppColors.textPrimary,
     lineHeight: 22,
   },
   actionRow: {
@@ -157,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   actionButton: {
-    backgroundColor: '#38BDF8',
+    backgroundColor: AppColors.primary,
     borderRadius: 12,
     paddingVertical: 12,
     width: '48%',
@@ -167,7 +160,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginLeft: 6,
-    color: '#020617',
+    color: AppColors.textPrimary,
     fontWeight: '600',
   },
 });
