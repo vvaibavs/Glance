@@ -17,13 +17,14 @@ const userSchema = new mongoose.Schema({
 
   todos: [
     {
-      text: String,
+      _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+      text: { type: String, required: true },
       completed: { type: Boolean, default: false },
-    }
+    },
   ],
-
   calendar: [
     {
+      _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
       title: String,
       date: Date,
     }

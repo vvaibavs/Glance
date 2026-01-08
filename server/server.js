@@ -119,7 +119,24 @@ app.post('/todos/:userId', async (req, res) => {
 
 //update todo status
 app.put('/todos/:userId/:todoId', async (req, res) => {
-
+    const { userId, todoId } = req.params;
+    const { completed } = req.body;
+    const user = await User.findById(userId);
+    const todo = user.todos.find(
+      (t) => t._id.toString() === todoId
+    );
+    todo.completed = completed;
+    await user.save();
+    res.json(user.todos);
 });
 
+// add calendar event
+app.post('/calendar/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const { title, date } = req.body;
+    const user = await User.findById(userId);
+    user.calendar.push({ title, date: new Date(date) });
+    await user.save();
+    res.json(user.calendar);
+});
 app.listen(3000, () => console.log('Server running on port 3000'));

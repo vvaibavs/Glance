@@ -8,7 +8,7 @@ import { Button } from '@react-navigation/elements';
 import { router } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -211,8 +211,14 @@ function LandscapeDashboard() {
 
   const handleTodoToggle = async (index: number) => {
     try {
-
-
+        const res = await fetch(`http://10.0.0.62:3000/todos/${user}/${todos[index]._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: !todos[index].completed }),
+      });
+      setTodos(await res.json());
     } catch (error) {
       console.log(error)
     }
@@ -238,14 +244,24 @@ function LandscapeDashboard() {
 
       <Text style={styles2.sectionTitle}>TODAY</Text>
         <Text style={{ fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16 }}>
-            Hello E-Ink
+            Hello User
         </Text>
-        <Text style={styles2.sectionTitle}>TASKS</Text>
-        {todos?.map((todo, index) => (
-            <TouchableOpacity key={index} onPress={() => {handleTodoToggle(index)}}>
-                <Text key={index} style={{fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16, textDecorationLine: todo.done ? 'line-through' : 'none',}}>{todo.text}</Text>
-            </TouchableOpacity>
-        ))}
+        <View style={{flexDirection: 'row', flex: 1}}>
+            <View style={{flex: 1, maxWidth: '30%', marginRight: 32}}>
+                <Text style={styles2.sectionTitle}>EVENTS</Text>
+                <Text style={{ fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16 }}>
+                    No events for today.
+                </Text>
+            </View>
+            <ScrollView style={{maxWidth: '25%', flex: 1}}>
+                <Text style={styles2.sectionTitle}>TASKS</Text>
+                {todos?.map((todo, index) => (
+                    <TouchableOpacity key={index} onPress={() => {handleTodoToggle(index)}}>
+                        <Text key={index} style={{fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16, textDecorationLine: todo.completed ? 'line-through' : 'none'}}>{todo.text}</Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+        </View>
     </View>
   );
 }
