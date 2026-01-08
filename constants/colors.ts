@@ -36,5 +36,5 @@ export const AppColors = {
   white: '#FFFFFF',
   black: '#000000',
   transparent: 'transparent',
-  glowColor: '#B86B4B',
+  glowColor: '#A78BFA',
 }

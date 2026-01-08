@@ -5,28 +5,32 @@ import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useOrientation } from '@/hooks/useOrientation';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  const orientation = useOrientation();
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          display: orientation === 'landscape' ? 'none' : 'flex',
+        },
       }}>
       <Tabs.Screen
-        name="index"
+        name="dashboard"
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="todoPage"
         options={{
-          title: 'Explore',
+          title: 'To-Dos',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />

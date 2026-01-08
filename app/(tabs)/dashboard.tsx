@@ -1,19 +1,27 @@
 import Orb from '@/components/orb';
 import { AppColors } from '@/constants/colors';
+import { einkTheme } from '@/constants/theme';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOrientation } from '@/hooks/useOrientation';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@react-navigation/elements';
 import { router } from 'expo-router';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
-
 export default function HomeScreen() {
+    const orientation = useOrientation();
   return (
     <SafeAreaView style={styles.safe}>
+      {orientation === 'landscape' ? (
+      <LandscapeDashboard />
+    ) : (
       <DashboardScreen />
+    )}
     </SafeAreaView>
   );
 }
@@ -25,6 +33,10 @@ function DashboardScreen() {
         await logout();
         router.replace('/');
   };
+  useEffect(() => {
+    ScreenOrientation.unlockAsync();
+  }, []);
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -33,7 +45,7 @@ function DashboardScreen() {
       </View>
 
       {/* Device Preview */}
-      <View style={styles.previewCard}>
+      <View style={styles.center}>
         <Orb size={200} imageSource={require('../../assets/images/orb.png')} />
       </View>
 
@@ -90,12 +102,26 @@ const styles = StyleSheet.create({
   },
   previewCard: {
     backgroundColor: AppColors.surface,
-    borderRadius: 18,
+    borderRadius: 100,
     padding: 24,
     marginBottom: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 260,
+    maxHeight: 200,
+    maxWidth: 200,
+  },
+  center: {
+    borderRadius: 100,
+    padding: 24,
+    marginBottom: 20,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxHeight: 200,
+    maxWidth: 200,
   },
   previewTitle: {
     color: AppColors.primary,
@@ -162,5 +188,96 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     color: AppColors.textPrimary,
     fontWeight: '600',
+  },
+});
+
+function LandscapeDashboard() {
+    const {user, loading, logout} = useAuth()
+    const getTime = () => {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+    const [todos, setTodos] = useState<string[]>()
+    const getTodos = async() => {
+    try {
+      const res = await fetch(`http://10.0.0.62:3000/todos/${user}`);
+      setTodos(await res.json());
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const handleTodoToggle = async (index: number) => {
+    try {
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+
+    const [time, setTime] = useState(getTime());
+    useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(getTime());
+    }, 60 * 1000); // update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+    return (
+    <View style={styles.container}>
+      <Text style={styles2.time}>{time}</Text>
+
+      <Text style={styles2.sectionTitle}>TODAY</Text>
+        <Text style={{ fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16 }}>
+            Hello E-Ink
+        </Text>
+        <Text style={styles2.sectionTitle}>TASKS</Text>
+        {todos?.map((todo, index) => (
+            <TouchableOpacity key={index} onPress={() => {handleTodoToggle(index)}}>
+                <Text key={index} style={{fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16, textDecorationLine: todo.done ? 'line-through' : 'none',}}>{todo.text}</Text>
+            </TouchableOpacity>
+        ))}
+    </View>
+  );
+}
+
+const styles2 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: einkTheme.background,
+    padding: 32,
+    justifyContent: 'center',
+  },
+  time: {
+    fontSize: 56,
+    fontWeight: '600',
+    fontFamily: 'VT323',
+    color: einkTheme.foreground,
+    textAlign: 'center',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: einkTheme.border,
+    marginVertical: 24,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    letterSpacing: 2,
+    marginBottom: 12,
+    color: einkTheme.secondary,
+  },
+  item: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: einkTheme.foreground,
   },
 });

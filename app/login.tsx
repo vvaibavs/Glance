@@ -45,6 +45,7 @@ function LoginScreen() {
 
 
 
+
   return (
     <View style={styles.container}>
       {/* App Logo / Title */}
@@ -103,11 +104,12 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: '700',
     color: AppColors.textPrimary,
+    outline: AppColors.glowColor,
     textAlign: 'center',
     marginBottom: 6,
     textShadowColor: AppColors.glowColor,
     textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 12,
+    textShadowRadius: 16,
   },
   subtitle: {
     fontSize: 16,

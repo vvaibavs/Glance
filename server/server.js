@@ -117,4 +117,9 @@ app.post('/todos/:userId', async (req, res) => {
     res.json(user.todos);
 });
 
+//update todo status
+app.put('/todos/:userId/:todoId', async (req, res) => {
+
+});
+
 app.listen(3000, () => console.log('Server running on port 3000'));

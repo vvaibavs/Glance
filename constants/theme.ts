@@ -27,6 +27,15 @@ export const Colors = {
   },
 };
 
+// theme/eink.ts
+export const einkTheme = {
+  background: '#FFFFFF',
+  foreground: '#e4dbdbff',
+  secondary: '#555555',
+  border: '#DDDDDD',
+};
+
+
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */

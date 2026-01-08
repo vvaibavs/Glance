@@ -10,14 +10,14 @@ export default function Orb({ size = 150, imageSource }) {
     Animated.loop(
       Animated.sequence([
         Animated.timing(scale, {
-          toValue: 1.05,
-          duration: 2000,
+          toValue: 1.1,
+          duration: 1500,
           useNativeDriver: true,
           easing: Easing.inOut(Easing.ease),
         }),
         Animated.timing(scale, {
           toValue: 1,
-          duration: 2000,
+          duration: 1500,
           useNativeDriver: true,
           easing: Easing.inOut(Easing.ease),
         }),
@@ -44,7 +44,7 @@ export default function Orb({ size = 150, imageSource }) {
     borderRadius: size*0.6 / 2,
     shadowColor: '#C4B5FC', // glow color
     shadowOpacity: 1,
-    shadowRadius: 60,
+    shadowRadius: 40,
     shadowOffset: { width: 0, height: 0 },
   }}>
     <Image source={imageSource} style={{ width: size, height: size }} />
