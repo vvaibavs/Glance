@@ -6,11 +6,10 @@ import { einkTheme } from '@/constants/theme';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrientation } from '@/hooks/useOrientation';
 import { Ionicons } from '@expo/vector-icons';
-import { Button } from '@react-navigation/elements';
 import { router } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -30,6 +29,7 @@ export default function HomeScreen() {
 
 function DashboardScreen() {
     const {user, loading, logout} = useAuth()
+    const [profileOpen, setProfileOpen] = useState(false);
     console.log(user)
     const handleLogout = async () => {
         await logout();
@@ -40,10 +40,28 @@ function DashboardScreen() {
   }, []);
 
   return (
+    <TouchableWithoutFeedback onPress={() => setProfileOpen(false)}>
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Welcome {'User'}!</Text>
+        <TouchableOpacity
+            style={styles.profileButton}
+            onPress={() => setProfileOpen((prev) => !prev)}
+        >
+            <Ionicons name="person-outline" size={20} color="#E5E7EB" />
+        </TouchableOpacity>
+        {profileOpen && (
+            <View style={styles.dropdown}>
+                <Text style={styles.email}>user@email.com</Text>
+
+                <View style={styles.divider} />
+                <TouchableOpacity style={styles.logout} onPress={handleLogout}>
+                <Ionicons name="log-out-outline" size={16} color="#F87171" />
+                <Text style={styles.logoutText}>Log out</Text>
+                </TouchableOpacity>
+            </View>
+            )}
       </View>
 
       {/* Device Preview */}
@@ -70,8 +88,9 @@ function DashboardScreen() {
           </TouchableOpacity>
         </View>
       </View>
-      <Button onPress={handleLogout} style={styles.actionButton}><Text style={styles.actionText}>Logout</Text></Button>
+      {/* <Button onPress={handleLogout} style={styles.actionButton}><Text style={styles.actionText}>Logout</Text></Button> */}
     </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -191,6 +210,71 @@ const styles = StyleSheet.create({
     color: AppColors.textPrimary,
     fontWeight: '600',
   },
+    profileButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#0F172A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#1E293B',
+    zIndex: 20,
+    },
+
+    dropdown: {
+        position: 'absolute',
+        top: 64,
+        right: 16,
+        width: 220,
+        backgroundColor: AppColors.background,
+        borderRadius: 16,
+        padding: 16,
+        zIndex: 20,
+        shadowColor: '#000',
+        shadowOpacity: 0.4,
+        shadowRadius: 10,
+        elevation: 8,
+    },
+
+    email: {
+    color: '#E5E7EB',
+    fontWeight: '600',
+    marginBottom: 8,
+    },
+
+    divider: {
+    height: 1,
+    backgroundColor: '#1E293B',
+    marginVertical: 10,
+    },
+
+    row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+    },
+
+    status: {
+    color: '#22C55E',
+    fontSize: 13,
+    },
+
+    logout: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 6,
+    },
+
+    logoutText: {
+    color: '#F87171',
+    fontWeight: '600',
+    },
 });
 
 function LandscapeDashboard() {
