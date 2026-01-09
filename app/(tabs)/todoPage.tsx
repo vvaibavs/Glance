@@ -1,17 +1,24 @@
-import { AppColors } from '@/constants/colors';
-import { useAuth } from '@/contexts/AuthContext';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { AppColors } from "@/constants/colors";
+import { useAuth } from "@/contexts/AuthContext";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // TO-DO PAGE UI ONLY
 // UI-first, no navigation, no BLE yet
 
 const MOCK_TASKS = [
-  { id: '1', title: 'Finish UI design', done: false },
-  { id: '2', title: 'Define BLE protocol', done: false },
-  { id: '3', title: 'Test ESP32 display', done: true },
+  { id: "1", title: "Finish UI design", done: false },
+  { id: "2", title: "Define BLE protocol", done: false },
+  { id: "3", title: "Test ESP32 display", done: true },
 ];
 
 export default function App() {
@@ -25,14 +32,14 @@ export default function App() {
 function TodoScreen() {
   const router = useRouter();
   const [todos, setTodos] = useState([]);
-  const {user} = useAuth();
-  const getTodos = async() => {
+  const { user } = useAuth();
+  const getTodos = async () => {
     try {
       const res = await fetch(`http://10.0.0.62:3000/todos/${user}`);
       setTodos(await res.json());
-      console.log(todos[1]['text']);
+      console.log(todos[1]["text"]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -54,7 +61,10 @@ function TodoScreen() {
       />
 
       {/* Add Task FAB */}
-      <TouchableOpacity style={styles.fab} onPress={() => router.push('/modal')}>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push("/modal")}
+      >
         <Ionicons name="add" size={28} color="#020617" />
       </TouchableOpacity>
     </View>
@@ -65,7 +75,7 @@ function TaskItem({ task }) {
   return (
     <TouchableOpacity style={[styles.taskCard, task.done && styles.taskDone]}>
       <Ionicons
-        name={task.done ? 'checkmark-circle' : 'ellipse-outline'}
+        name={task.done ? "checkmark-circle" : "ellipse-outline"}
         size={22}
         color={task.done ? AppColors.success : AppColors.textSecondary}
       />
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: '700',
+    fontWeight: "700",
     color: AppColors.textPrimary,
   },
   subtitle: {
@@ -99,8 +109,8 @@ const styles = StyleSheet.create({
     color: AppColors.textSecondary,
   },
   taskCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: AppColors.surface,
     borderRadius: 14,
     padding: 14,
@@ -116,19 +126,19 @@ const styles = StyleSheet.create({
     color: AppColors.textPrimary,
   },
   taskTextDone: {
-    textDecorationLine: 'line-through',
+    textDecorationLine: "line-through",
     color: AppColors.textSecondary,
   },
   fab: {
-    position: 'absolute',
+    position: "absolute",
     right: 24,
     bottom: 24,
     width: 60,
     height: 60,
     borderRadius: 30,
     backgroundColor: AppColors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: AppColors.shadow,
     shadowOpacity: 0.3,
     shadowRadius: 6,

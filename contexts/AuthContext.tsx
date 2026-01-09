@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   user: string | null;
@@ -16,7 +16,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const loadUser = async () => {
-      const storedUser = await AsyncStorage.getItem('userId');
+      const storedUser = await AsyncStorage.getItem("userId");
       if (storedUser) setUser(storedUser);
       setLoading(false);
     };
@@ -25,12 +25,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (userId: string) => {
-    await AsyncStorage.setItem('userId', userId);
+    await AsyncStorage.setItem("userId", userId);
     setUser(userId);
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem("userId");
     setUser(null);
   };
 
@@ -43,6 +43,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used inside AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 };

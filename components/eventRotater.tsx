@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet, Text, View } from "react-native";
 
 export function EventRotator({ events }) {
   const [index, setIndex] = useState(0);
@@ -50,22 +50,22 @@ export function EventRotator({ events }) {
 const styles3 = StyleSheet.create({
   card: {
     borderWidth: 1,
-    borderColor: '#ffffffff',
+    borderColor: "#ffffffff",
     paddingVertical: 20,
     paddingHorizontal: 24,
-    alignItems: 'center',
-    width: '100%',
+    alignItems: "center",
+    width: "100%",
   },
   eventTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#E5E7EB',
-    fontFamily: 'VT323',
+    fontWeight: "600",
+    color: "#E5E7EB",
+    fontFamily: "VT323",
   },
   eventDate: {
     marginTop: 6,
     fontSize: 14,
-    fontFamily: 'VT323',
-    color: '#94A3B8',
+    fontFamily: "VT323",
+    color: "#94A3B8",
   },
 });

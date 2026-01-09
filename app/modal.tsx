@@ -1,34 +1,36 @@
-import { Link, router } from 'expo-router';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Link, router } from "expo-router";
+import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { AppColors } from '@/constants/colors';
-import { useAuth } from '@/contexts/AuthContext';
-import { useState } from 'react';
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { AppColors } from "@/constants/colors";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
 
 export default function ModalScreen() {
-    const [todo, setTodo] = useState<string>('');
-    const {user} = useAuth();
-    const handleAddTodo = async() => {
-        console.log('adding todo:', todo);
-      try {
-        const res = await fetch(`http://10.0.0.62:3000/todos/${user}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ todo: todo }),
-        });
-      } catch (error) {
-        console.log(error)
-      }
-      router.replace('/todoPage');
-    };
+  const [todo, setTodo] = useState<string>("");
+  const { user } = useAuth();
+  const handleAddTodo = async () => {
+    console.log("adding todo:", todo);
+    try {
+      const res = await fetch(`http://10.0.0.62:3000/todos/${user}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ todo: todo }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    router.replace("/todoPage");
+  };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>Add a New Task</ThemedText>
+      <ThemedText type="title" style={styles.title}>
+        Add a New Task
+      </ThemedText>
 
       <TextInput
         style={styles.input}
@@ -49,7 +51,9 @@ export default function ModalScreen() {
       </TouchableOpacity>
 
       <Link href="/" dismissTo style={styles.backLink}>
-        <ThemedText type="link" style={styles.linkText}>← Back to home</ThemedText>
+        <ThemedText type="link" style={styles.linkText}>
+          ← Back to home
+        </ThemedText>
       </Link>
     </ThemedView>
   );
@@ -58,8 +62,8 @@ export default function ModalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: 24,
     paddingVertical: 40,
     gap: 20,
@@ -67,8 +71,8 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 8,
     fontSize: 28,
-    fontWeight: '700',
-    textAlign: 'center',
+    fontWeight: "700",
+    textAlign: "center",
   },
   input: {
     backgroundColor: AppColors.surface,
@@ -80,17 +84,17 @@ const styles = StyleSheet.create({
     borderColor: AppColors.border,
     minHeight: 100,
     maxHeight: 150,
-    fontFamily: 'System',
-    width: '100%',
+    fontFamily: "System",
+    width: "100%",
   },
   button: {
     backgroundColor: AppColors.primary,
     paddingVertical: 14,
     paddingHorizontal: 32,
     borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
     shadowColor: AppColors.shadowColor,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -104,7 +108,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: AppColors.white,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   backLink: {
     marginTop: 16,

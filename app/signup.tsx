@@ -1,7 +1,14 @@
-import { AppColors } from '@/constants/colors';
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { AppColors } from "@/constants/colors";
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function App() {
   return (
@@ -12,31 +19,30 @@ export default function App() {
 }
 
 function SignUpScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const signup = async() => {
+  const signup = async () => {
     try {
-        const data = await fetch('http://10.0.0.62:3000/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email,
-                userName: name,
-                password,
-            }),
-        });
+      const data = await fetch("http://10.0.0.62:3000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          userName: name,
+          password,
+        }),
+      });
 
-        const res = await data.json()
-
-    } catch(err) {
-        console.log(err)
+      const res = await data.json();
+    } catch (err) {
+      console.log(err);
     }
 
-    router.replace('/')
-  }
+    router.replace("/");
+  };
   return (
     <View style={styles.container}>
       {/* App Title */}
@@ -88,8 +94,15 @@ function SignUpScreen() {
       {/* Option to go to Login */}
       <View style={styles.optionsRow}>
         <Text style={styles.optionText}>Already have an account?</Text>
-        <TouchableOpacity onPress={() => router.push('/')}>
-          <Text style={[styles.optionText, { color: AppColors.primary, marginLeft: 4 }]}>Log In</Text>
+        <TouchableOpacity onPress={() => router.push("/")}>
+          <Text
+            style={[
+              styles.optionText,
+              { color: AppColors.primary, marginLeft: 4 },
+            ]}
+          >
+            Log In
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -100,16 +113,16 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: AppColors.background,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   container: {
     padding: 20,
   },
   title: {
     fontSize: 36,
-    fontWeight: '700',
+    fontWeight: "700",
     color: AppColors.primary,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 6,
     textShadowColor: AppColors.glowColor,
     textShadowOffset: { width: 0, height: 0 },
@@ -118,7 +131,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: AppColors.textSecondary,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 40,
   },
   inputContainer: {
@@ -136,17 +149,17 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.primary,
     paddingVertical: 16,
     borderRadius: 14,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   signUpButtonText: {
     color: AppColors.primaryDark,
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: 18,
   },
   optionsRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   optionText: {
     color: AppColors.textSecondary,
