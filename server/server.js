@@ -139,4 +139,11 @@ app.post('/calendar/:userId', async (req, res) => {
     await user.save();
     res.json(user.calendar);
 });
+
+// get calendar events
+app.get('/calendar/:userId', async (req, res) => {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    res.json(user.calendar);
+});
 app.listen(3000, () => console.log('Server running on port 3000'));

@@ -1,4 +1,6 @@
+import { EventRotator } from '@/components/eventRotater';
 import Orb from '@/components/orb';
+import { PomodoroTimer } from '@/components/pomodoroTimer';
 import { AppColors } from '@/constants/colors';
 import { einkTheme } from '@/constants/theme';
 import { useAuth } from '@/contexts/AuthContext';
@@ -193,6 +195,7 @@ const styles = StyleSheet.create({
 
 function LandscapeDashboard() {
     const {user, loading, logout} = useAuth()
+    const [events, setEvents] = useState<string[]>()
     const getTime = () => {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, '0');
@@ -228,6 +231,18 @@ function LandscapeDashboard() {
     getTodos();
   }, []);
 
+  const getEvents = async () => {
+    try {
+      const res = await fetch(`http://10.0.0.62:3000/calendar/${user}`);
+      setEvents(await res.json());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getEvents();
+  }, []);
 
     const [time, setTime] = useState(getTime());
     useEffect(() => {
@@ -247,20 +262,28 @@ function LandscapeDashboard() {
             Hello User
         </Text>
         <View style={{flexDirection: 'row', flex: 1}}>
-            <View style={{flex: 1, maxWidth: '30%', marginRight: 32}}>
+            <View style={{flex: 1, maxWidth: '30%', marginRight: 72}}>
                 <Text style={styles2.sectionTitle}>EVENTS</Text>
-                <Text style={{ fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16 }}>
-                    No events for today.
-                </Text>
+                <EventRotator events={events} />
             </View>
-            <ScrollView style={{maxWidth: '25%', flex: 1}}>
+            <View style={{flex: 1, maxWidth: '30%'}}>
                 <Text style={styles2.sectionTitle}>TASKS</Text>
-                {todos?.map((todo, index) => (
-                    <TouchableOpacity key={index} onPress={() => {handleTodoToggle(index)}}>
-                        <Text key={index} style={{fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16, textDecorationLine: todo.completed ? 'line-through' : 'none'}}>{todo.text}</Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+                <ScrollView style={{flex: 1}}>
+                    {todos?.map((todo, index) => (
+                        <TouchableOpacity key={index} onPress={() => {handleTodoToggle(index)}}>
+                            <Text key={index} style={{fontFamily: 'VT323', fontSize: 24, color: einkTheme.foreground, marginBottom: 16, textDecorationLine: todo.completed ? 'line-through' : 'none'}}>{todo.text}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+            </View>
+            <View style={{ flexDirection: 'row', gap: 16 }}>
+                <View style={{ flex: 1 }}>
+
+                    <PomodoroTimer />
+                </View>
+
+            </View>
+
         </View>
     </View>
   );
@@ -269,7 +292,7 @@ function LandscapeDashboard() {
 const styles2 = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: einkTheme.background,
+    backgroundColor: AppColors.background,
     padding: 32,
     justifyContent: 'center',
   },
