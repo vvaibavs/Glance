@@ -1,3 +1,4 @@
+import AmbientPlayer from "@/components/ambientPlayer";
 import { EventRotator } from "@/components/eventRotater";
 import Orb from "@/components/orb";
 import { PomodoroTimer } from "@/components/pomodoroTimer";
@@ -354,8 +355,33 @@ function LandscapeDashboard() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles2.time}>{time}</Text>
-
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginTop: 16 }}
+      >
+        <Text style={styles2.time}>{time}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            marginLeft: "auto",
+            marginRight: 24,
+            backgroundColor: "#d1d1d1ff",
+            padding: 8,
+          }}
+        >
+          <AmbientPlayer />
+          <Text
+            style={{
+              fontFamily: "VT323",
+              fontSize: 24,
+              marginTop: "auto",
+              marginBottom: "auto",
+              marginLeft: 8,
+            }}
+          >
+            Rain Sounds
+          </Text>
+        </View>
+      </View>
       <Text style={styles2.sectionTitle}>TODAY</Text>
       <Text
         style={{
