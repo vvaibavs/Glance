@@ -1,50 +1,41 @@
-# Welcome to your Expo app 👋
+🌙 Ambient Productivity App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A minimal, distraction-free productivity app designed for landscape use.
+Combines task management, calendar events, ambient sound playback, and Spotify integration into a clean desk-style interface.
 
-## Get started
+✨ Features
+🔐 Authentication
 
-1. Install dependencies
+User signup & login
 
-   ```bash
-   npm install
-   ```
+Backend powered by Node.js + Express + MongoDB
 
-2. Start the app
+Persistent login using AsyncStorage
 
-   ```bash
-   npx expo start
-   ```
+✅ To-Do System
 
-In the output, you'll find options to open the app in a
+Add and update tasks
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Tasks stored per user
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Synced with backend
 
-## Get a fresh project
+📅 Calendar Events
 
-When you're ready, run:
+User-specific events
 
-```bash
-npm run reset-project
-```
+Ambient rotating event display (one at a time)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Fade in/out animation for a clean desk aesthetic
 
-## Learn more
+🎧 Ambient Sound Player
 
-To learn more about developing your project with Expo, look at the following resources:
+Local ambient sounds (rain, nature, etc.)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Looping playback
 
-## Join the community
+Play / pause controls
 
-Join our community of developers creating universal apps.
+Runs in silent mode on iOS
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Built with expo-av
